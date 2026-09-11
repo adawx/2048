@@ -16,7 +16,7 @@
 .game-intro::before {
   position: absolute;
   top: -2rem;
-  left: -1.25rem;
+  left: 0;
   width: 4rem;
   height: 0.35rem;
   border-radius: 1rem;
