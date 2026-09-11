@@ -40,6 +40,12 @@ You should be able to play the game at `localhost:5173`.
 Use the arrow keys to move tiles.
 Select **New game** to reset the board.
 
+## AI suggestions
+
+Create a local `.env.local` file from `.env.example` and add an `OPENROUTER_API_KEY`.
+The key is injected into the browser bundle for this demo and must not be used in production.
+The **Suggest a move** button is available only while a game is in progress.
+
 ## Commands
 
 ```sh
@@ -47,4 +53,3 @@ pnpm test
 pnpm lint
 pnpm build
 ```
-
