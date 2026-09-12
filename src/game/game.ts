@@ -6,12 +6,7 @@ import {
   moveBoard,
   placeTileInRandomEmptyCell,
 } from '@game/board';
-import {
-  type Direction,
-  type GameState,
-  type NewGameOptions,
-  type Random,
-} from '@shared/types';
+import { type Direction, type GameState, type NewGameOptions, type Random } from '@shared/types';
 import {
   BOARD_SIZE,
   INITIAL_TILE_VALUE,
@@ -29,9 +24,7 @@ export function createGame({
   const tileCount = initialTileCount ?? randomInitialTileCount(random);
 
   if (tileCount < 1 || tileCount > BOARD_SIZE * BOARD_SIZE) {
-    throw new RangeError(
-      `initialTileCount must be between 1 and ${BOARD_SIZE * BOARD_SIZE}`,
-    );
+    throw new RangeError(`initialTileCount must be between 1 and ${BOARD_SIZE * BOARD_SIZE}`);
   }
 
   let board = createEmptyBoard();
@@ -59,11 +52,7 @@ export function move(
   }
 
   return withStatus({
-    board: placeTileInRandomEmptyCell(
-      movedBoard,
-      randomSpawnedTile(random),
-      random,
-    ),
+    board: placeTileInRandomEmptyCell(movedBoard, randomSpawnedTile(random), random),
     status: 'playing',
   });
 }

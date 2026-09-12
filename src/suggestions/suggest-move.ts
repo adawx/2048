@@ -1,8 +1,4 @@
-import {
-  Direction,
-  type Direction as DirectionValue,
-  type GameState,
-} from '@shared/types';
+import { Direction, type Direction as DirectionValue, type GameState } from '@shared/types';
 
 const MODEL = 'openrouter/auto';
 
@@ -26,9 +22,7 @@ export async function suggestMove(
   { apiKey = import.meta.env.OPENROUTER_API_KEY_2048 }: SuggestMoveOptions = {},
 ): Promise<DirectionValue> {
   if (game.status !== 'playing') {
-    throw new Error(
-      'Suggestions are only available while the game is in progress.',
-    );
+    throw new Error('Suggestions are only available while the game is in progress.');
   }
 
   if (!apiKey) {
@@ -75,9 +69,7 @@ function parseDirection(content: string): DirectionValue {
     !('direction' in parsed) ||
     !isDirection(parsed.direction)
   ) {
-    throw new Error(
-      'The suggestion response did not contain a valid direction.',
-    );
+    throw new Error('The suggestion response did not contain a valid direction.');
   }
 
   return parsed.direction;

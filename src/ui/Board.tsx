@@ -1,7 +1,7 @@
-import type { Board as BoardState } from '@shared/types'
+import type { Board as BoardState } from '@shared/types';
 
 interface BoardProps {
-  readonly board: BoardState
+  readonly board: BoardState;
 }
 
 export function Board({ board }: BoardProps) {
@@ -24,5 +24,5 @@ export function Board({ board }: BoardProps) {
         )),
       )}
     </div>
-  )
+  );
 }
