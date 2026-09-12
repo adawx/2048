@@ -2,32 +2,21 @@ import { BOARD_SIZE } from '@shared/constants';
 import { Direction, type Board, type Random, type Tile } from '@shared/types';
 
 export function createEmptyBoard(): Board {
-  return Array.from({ length: BOARD_SIZE }, () =>
-    Array<Tile>(BOARD_SIZE).fill(null),
-  );
+  return Array.from({ length: BOARD_SIZE }, () => Array<Tile>(BOARD_SIZE).fill(null));
 }
 
-export function placeRandomTile(
-  board: Board,
-  value: number,
-  random: Random,
-): Board {
+export function placeTileInRandomEmptyCell(board: Board, value: number, random: Random): Board {
   const emptyCells = board.flatMap((row, rowIndex) =>
-    row.flatMap((tile, columnIndex) =>
-      tile === null ? [[rowIndex, columnIndex]] : [],
-    ),
+    row.flatMap((tile, columnIndex) => (tile === null ? [[rowIndex, columnIndex]] : [])),
   );
 
   if (emptyCells.length === 0) {
     return board;
   }
 
-  const [rowIndex, columnIndex] =
-    emptyCells[Math.floor(random() * emptyCells.length)];
+  const [rowIndex, columnIndex] = emptyCells[Math.floor(random() * emptyCells.length)];
   return board.map((row, index) =>
-    index === rowIndex
-      ? row.map((tile, column) => (column === columnIndex ? value : tile))
-      : row,
+    index === rowIndex ? row.map((tile, column) => (column === columnIndex ? value : tile)) : row,
   );
 }
 
@@ -45,16 +34,12 @@ export function hasAvailableMove(board: Board): boolean {
   const directions = [Direction.Left, Direction.Up];
   return (
     board.some((row) => row.some((tile) => tile === null)) ||
-    directions.some(
-      (direction) => !boardsEqual(board, moveBoard(board, direction)),
-    )
+    directions.some((direction) => !boardsEqual(board, moveBoard(board, direction)))
   );
 }
 
 export function containsTile(board: Board, value: number): boolean {
-  return board.some((row) =>
-    row.some((tile) => tile !== null && tile >= value),
-  );
+  return board.some((row) => row.some((tile) => tile !== null && tile >= value));
 }
 
 export function boardsEqual(first: Board, second: Board): boolean {
@@ -64,17 +49,10 @@ export function boardsEqual(first: Board, second: Board): boolean {
 }
 
 function readLine(board: Board, direction: Direction, index: number): Tile[] {
-  return lineCoordinates(direction, index).map(
-    ([row, column]) => board[row][column],
-  );
+  return lineCoordinates(direction, index).map(([row, column]) => board[row][column]);
 }
 
-function writeLine(
-  board: Tile[][],
-  direction: Direction,
-  index: number,
-  line: Tile[],
-): void {
+function writeLine(board: Tile[][], direction: Direction, index: number, line: Tile[]): void {
   lineCoordinates(direction, index).forEach(([row, column], lineIndex) => {
     board[row][column] = line[lineIndex];
   });
@@ -84,10 +62,7 @@ function lineCoordinates(
   direction: Direction,
   index: number,
 ): readonly (readonly [number, number])[] {
-  const positions = Array.from(
-    { length: BOARD_SIZE },
-    (_, offset) => [index, offset] as const,
-  );
+  const positions = Array.from({ length: BOARD_SIZE }, (_, offset) => [index, offset] as const);
 
   switch (direction) {
     case Direction.Left:

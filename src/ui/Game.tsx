@@ -49,9 +49,7 @@ export function Game() {
       setSuggestion(`Try moving ${direction}.`);
     } catch (error) {
       setSuggestion(
-        error instanceof MissingApiKeyError
-          ? error.message
-          : 'Unable to get a suggestion.',
+        error instanceof MissingApiKeyError ? error.message : 'Unable to get a suggestion.',
       );
     } finally {
       setIsSuggesting(false);
@@ -67,11 +65,7 @@ export function Game() {
     <main className="game-page">
       <section className="game-intro" aria-labelledby="game-title">
         <header className="game-header">
-          <p className="eyebrow">A small numbers game</p>
           <h1 id="game-title">2048</h1>
-          <p className="game-description">
-            Shift. Combine. Keep the board alive.
-          </p>
         </header>
         <p className="game-message" aria-live="polite">
           {message}

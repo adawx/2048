@@ -8,6 +8,8 @@ export const Direction = {
 } as const;
 export type Direction = (typeof Direction)[keyof typeof Direction];
 export type GameStatus = 'playing' | 'won' | 'lost';
+
+/** Produces a uniformly distributed number in the half-open interval [0, 1). */
 export type Random = () => number;
 
 export interface GameState {
