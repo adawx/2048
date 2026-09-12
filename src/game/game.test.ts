@@ -1,13 +1,12 @@
 import { describe, expect, it } from 'vitest'
 import { createGame, move } from '@game/game'
-import { Direction, type Board, type Random } from '@shared/types'
+import { Direction, type Random } from '@shared/types'
+import { createPlayingGame } from '../test/fixtures'
 
 const fixedRandom = (...values: number[]): Random => {
   let index = 0
   return () => values[index++ % values.length]
 }
-
-const gameWith = (board: Board) => ({ board, status: 'playing' as const })
 
 describe('createGame', () => {
   it('places at least one and up to a full board of twos by default', () => {
@@ -27,7 +26,7 @@ describe('createGame', () => {
 
 describe('move', () => {
   it('slides and merges left once per tile, then adds a new tile', () => {
-    const game = gameWith([
+    const game = createPlayingGame([
       [null, 8, 2, 2],
       [4, 2, null, 2],
       [null, null, null, null],
@@ -46,7 +45,7 @@ describe('move', () => {
 
   it('moves right and reverses merge order correctly', () => {
     const result = move(
-      gameWith([
+      createPlayingGame([
         [2, 2, 2, 2],
         [null, null, null, null],
         [null, null, null, null],
@@ -62,7 +61,7 @@ describe('move', () => {
 
   it('moves tiles vertically', () => {
     const result = move(
-      gameWith([
+      createPlayingGame([
         [null, 8, 2, 2],
         [4, 2, null, 2],
         [null, null, null, null],
@@ -82,7 +81,7 @@ describe('move', () => {
 
   it('moves tiles down', () => {
     const result = move(
-      gameWith([
+      createPlayingGame([
         [2, null, null, null],
         [2, null, null, null],
         [4, null, null, null],
@@ -96,7 +95,7 @@ describe('move', () => {
   })
 
   it('does not add a tile for a move that does not change the board', () => {
-    const game = gameWith([
+    const game = createPlayingGame([
       [2, null, null, null],
       [null, null, null, null],
       [null, null, null, null],
@@ -107,7 +106,7 @@ describe('move', () => {
   })
 
   it('reports a loss when no moves remain', () => {
-    const game = gameWith([
+    const game = createPlayingGame([
       [2, 4, 2, 4],
       [4, 2, 4, 2],
       [2, 4, 2, 4],
@@ -119,7 +118,7 @@ describe('move', () => {
 
   it('reports a win after creating a 2048 tile', () => {
     const result = move(
-      gameWith([
+      createPlayingGame([
         [1024, 1024, null, null],
         [null, null, null, null],
         [null, null, null, null],
