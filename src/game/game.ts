@@ -14,6 +14,9 @@ import {
 } from '@shared/types';
 import {
   BOARD_SIZE,
+  INITIAL_TILE_VALUE,
+  SPAWNED_TILE_VALUES,
+  TWO_TILE_SPAWN_PROBABILITY,
   WINNING_TILE,
 } from '@shared/constants';
 
@@ -34,7 +37,7 @@ export function createGame({
   let board = createEmptyBoard();
 
   for (let count = 0; count < tileCount; count += 1) {
-    board = placeTileInRandomEmptyCell(board, 2, random);
+    board = placeTileInRandomEmptyCell(board, INITIAL_TILE_VALUE, random);
   }
 
   return { board, status: 'playing' };
@@ -58,7 +61,7 @@ export function move(
   return withStatus({
     board: placeTileInRandomEmptyCell(
       movedBoard,
-      random() < 0.9 ? 2 : 4,
+      randomSpawnedTile(random),
       random,
     ),
     status: 'playing',
@@ -67,6 +70,11 @@ export function move(
 
 function randomInitialTileCount(random: Random): number {
   return 1 + Math.floor(random() * BOARD_SIZE * BOARD_SIZE);
+}
+
+function randomSpawnedTile(random: Random): number {
+  const [two, four] = SPAWNED_TILE_VALUES;
+  return random() < TWO_TILE_SPAWN_PROBABILITY ? two : four;
 }
 
 function withStatus(game: GameState): GameState {
