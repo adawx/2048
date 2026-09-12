@@ -25,6 +25,8 @@ The board module `src/game/board.ts` conains the board mechanics behind the game
 
 The React layer pretty much only renders the `GameState` and forwards keyboard input.
 
+AI Suggestion logic is in it's own module inside `suggestions`. Simple wrapper around OpenRouter's SDK. Idea was a simple interface for initial testing and implementation, easily migratable to a backend service when productionising. Same thought process applies to the game logic, abstracting it and the interfaces out enough to be shifted to a backend service, with the types declared in standalone API contracts if that's the route taken.
+
 ## Usage
 
 Using pnpm as the package manager (but yarn, npm, bun, etc. should work too):
@@ -42,7 +44,7 @@ Select **New game** to reset the board.
 
 Whilst playing you can select **Suggest a move** to get a suggestion from an AI model for the best possible move. You will need to provide your own OpenRouter API key to use the AI suggestion feature.
 
-## AI suggestions
+## AI Suggestions
 
 Create a local `.env.local` file from `.env.example` and add an `OPENROUTER_API_KEY_2048`.
 The key is injected into the browser bundle for this demo and must not be used in production.
