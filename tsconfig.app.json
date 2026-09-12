@@ -6,7 +6,8 @@
     "module": "esnext",
     "paths": {
       "@game/*": ["./src/game/*"],
-      "@shared/*": ["./src/shared/*"]
+      "@shared/*": ["./src/shared/*"],
+      "@suggestions/*": ["./src/suggestions/*"]
     },
     "types": ["vite/client"],
     "allowArbitraryExtensions": true,
