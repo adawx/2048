@@ -4,7 +4,7 @@ import {
   createEmptyBoard,
   hasAvailableMove,
   moveBoard,
-  placeRandomTile,
+  placeTileInRandomEmptyCell,
 } from '@game/board';
 import {
   type Direction,
@@ -34,7 +34,7 @@ export function createGame({
   let board = createEmptyBoard();
 
   for (let count = 0; count < tileCount; count += 1) {
-    board = placeRandomTile(board, 2, random);
+    board = placeTileInRandomEmptyCell(board, 2, random);
   }
 
   return { board, status: 'playing' };
@@ -56,7 +56,11 @@ export function move(
   }
 
   return withStatus({
-    board: placeRandomTile(movedBoard, random() < 0.9 ? 2 : 4, random),
+    board: placeTileInRandomEmptyCell(
+      movedBoard,
+      random() < 0.9 ? 2 : 4,
+      random,
+    ),
     status: 'playing',
   });
 }

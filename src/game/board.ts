@@ -7,7 +7,7 @@ export function createEmptyBoard(): Board {
   );
 }
 
-export function placeRandomTile(
+export function placeTileInRandomEmptyCell(
   board: Board,
   value: number,
   random: Random,

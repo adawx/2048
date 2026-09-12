@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { hasAvailableMove, moveBoard, placeRandomTile } from '@game/board'
+import { hasAvailableMove, moveBoard, placeTileInRandomEmptyCell } from '@game/board'
 import { Direction, type Board, type Random } from '@shared/types'
 
 const fixedRandom = (...values: number[]): Random => {
@@ -57,7 +57,7 @@ describe('moveBoard', () => {
   })
 })
 
-describe('placeRandomTile', () => {
+describe('placeTileInRandomEmptyCell', () => {
   it('uses the supplied random source to select an empty cell', () => {
     const board: Board = [
       [2, null, null, null],
@@ -66,7 +66,7 @@ describe('placeRandomTile', () => {
       [null, null, null, null],
     ]
 
-    expect(placeRandomTile(board, 4, fixedRandom(0.5))).toEqual([
+    expect(placeTileInRandomEmptyCell(board, 4, fixedRandom(0.5))).toEqual([
       [2, null, null, null],
       [null, null, null, null],
       [4, null, null, null],
