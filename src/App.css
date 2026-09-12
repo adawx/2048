@@ -71,6 +71,41 @@ h1 {
   transition: background 150ms ease, border-color 150ms ease;
 }
 
+.suggestion-button {
+  margin-left: 0.5rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid #8cf5cf;
+  border-radius: 0.35rem;
+  background: #8cf5cf;
+  color: #12211f;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+.suggestion-button:hover:not(:disabled) {
+  background: #b6f1dd;
+}
+
+.suggestion-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.suggestion-button:focus-visible {
+  outline: 3px solid #f5f7ff;
+  outline-offset: 3px;
+}
+
+.suggestion-message {
+  min-height: 1.5rem;
+  margin: 0.9rem 0 0;
+  color: #8cf5cf;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
 .reset-button:hover,
 .game-over button:hover {
   border-color: #8cf5cf;

@@ -7,7 +7,7 @@
 - [Overview](#overview)
 - [Technical Choices](#technical-choices)
 - [Usage](#usage)
-- [Commands](#commands)
+- [Other Commands](#other-commands)
 
 ## Technical Choices
 
@@ -40,11 +40,18 @@ You should be able to play the game at `localhost:5173`.
 Use the arrow keys to move tiles.
 Select **New game** to reset the board.
 
-## Commands
+Whilst playing you can select **Suggest a move** to get a suggestion from an AI model for the best possible move. You will need to provide your own OpenRouter API key to use the AI suggestion feature.
+
+## AI suggestions
+
+Create a local `.env.local` file from `.env.example` and add an `OPENROUTER_API_KEY_2048`.
+The key is injected into the browser bundle for this demo and must not be used in production.
+The **Suggest a move** button is available only while a game is in progress.
+
+## Other Commands
 
 ```sh
 pnpm test 
 pnpm lint
 pnpm build
 ```
-
