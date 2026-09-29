@@ -70,6 +70,9 @@ export function Game() {
       <section className="game-intro" aria-labelledby="game-title">
         <header className="game-header">
           <h1 id="game-title">2048</h1>
+          <p className="game-score" aria-label={`Score: ${game.score}`}>
+            Score <strong>{game.score}</strong>
+          </p>
         </header>
         <p className="game-message" aria-live="polite">
           {message}

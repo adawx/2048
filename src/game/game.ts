@@ -3,7 +3,7 @@ import {
   containsTile,
   createEmptyBoard,
   hasAvailableMove,
-  moveBoard,
+  moveBoardWithScore,
   placeBlockedTileInRandomEmptyCell,
   placeTileInRandomEmptyCell,
 } from '@game/board';
@@ -37,7 +37,7 @@ export function createGame({
     board = placeTileInRandomEmptyCell(board, INITIAL_TILE_VALUE, random);
   }
 
-  return { board, status: 'playing' };
+  return { board, score: 0, status: 'playing' };
 }
 
 export function move(
@@ -49,7 +49,7 @@ export function move(
     return game;
   }
 
-  const movedBoard = moveBoard(game.board, direction);
+  const { board: movedBoard, score } = moveBoardWithScore(game.board, direction);
 
   if (boardsEqual(game.board, movedBoard)) {
     return withStatus(game);
@@ -57,6 +57,7 @@ export function move(
 
   return withStatus({
     board: placeTileInRandomEmptyCell(movedBoard, randomSpawnedTile(random), random),
+    score: game.score + score,
     status: 'playing',
   });
 }

@@ -20,6 +20,7 @@ describe('createGame', () => {
       Array(15).fill(2),
     );
     expect(game.board.flat().filter((tile) => tile === BLOCKED_TILE)).toHaveLength(1);
+    expect(minimumGame.score).toBe(0);
   });
 
   it('places the requested number of twos in distinct cells', () => {
@@ -54,6 +55,25 @@ describe('move', () => {
       [null, null, null, null],
       [2, null, null, 2],
     ]);
+    expect(result.score).toBe(8);
+  });
+
+  it('adds each merged value to the existing score', () => {
+    const result = move(
+      createPlayingGame(
+        [
+          [2, 2, 4, 4],
+          [null, null, null, null],
+          [null, null, null, null],
+          [null, null, null, null],
+        ],
+        16,
+      ),
+      Direction.Left,
+      fixedRandom(0, 0),
+    );
+
+    expect(result.score).toBe(28);
   });
 
   it('moves right and reverses merge order correctly', () => {

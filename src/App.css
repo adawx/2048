@@ -33,6 +33,18 @@ h1 {
   line-height: 0.72;
 }
 
+.game-score {
+  margin: 1.5rem 0 0;
+  color: #d9deed;
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.game-score strong {
+  color: #8cf5cf;
+}
+
 .game-message {
   min-height: 1.5rem;
   margin: 2rem 0 0.9rem;

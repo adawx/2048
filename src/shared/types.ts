@@ -15,6 +15,7 @@ export type Random = () => number;
 
 export interface GameState {
   readonly board: Board;
+  readonly score: number;
   readonly status: GameStatus;
 }
 

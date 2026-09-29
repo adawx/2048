@@ -9,6 +9,6 @@ export function createBoard(rows: readonly (readonly Tile[])[]): Board {
   return rows.map((row) => [...row]);
 }
 
-export function createPlayingGame(rows: readonly (readonly Tile[])[]): GameState {
-  return { board: createBoard(rows), status: 'playing' };
+export function createPlayingGame(rows: readonly (readonly Tile[])[], score = 0): GameState {
+  return { board: createBoard(rows), score, status: 'playing' };
 }

@@ -18,6 +18,7 @@ const game: GameState = {
     [null, null, null, null],
     [null, null, null, null],
   ],
+  score: 0,
   status: 'playing',
 };
 

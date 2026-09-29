@@ -1,6 +1,16 @@
 import { BOARD_SIZE } from '@shared/constants';
 import { BLOCKED_TILE, Direction, type Board, type Random, type Tile } from '@shared/types';
 
+interface BoardMove {
+  readonly board: Board;
+  readonly score: number;
+}
+
+interface LineMove {
+  readonly line: Tile[];
+  readonly score: number;
+}
+
 export function createEmptyBoard(): Board {
   return Array.from({ length: BOARD_SIZE }, () => Array<Tile>(BOARD_SIZE).fill(null));
 }
@@ -33,13 +43,20 @@ function placeValueInRandomEmptyCell(
 }
 
 export function moveBoard(board: Board, direction: Direction): Board {
+  return moveBoardWithScore(board, direction).board;
+}
+
+export function moveBoardWithScore(board: Board, direction: Direction): BoardMove {
   const nextBoard = createEmptyBoard().map((row) => [...row]);
+  let score = 0;
 
   for (let index = 0; index < BOARD_SIZE; index += 1) {
-    writeLine(nextBoard, direction, index, mergeLine(readLine(board, direction, index)));
+    const mergedLine = mergeLine(readLine(board, direction, index));
+    writeLine(nextBoard, direction, index, mergedLine.line);
+    score += mergedLine.score;
   }
 
-  return nextBoard;
+  return { board: nextBoard, score };
 }
 
 export function hasAvailableMove(board: Board): boolean {
@@ -88,35 +105,44 @@ function lineCoordinates(
   }
 }
 
-function mergeLine(line: Tile[]): Tile[] {
+function mergeLine(line: Tile[]): LineMove {
   const result: Tile[] = [];
   let segment: Tile[] = [];
+  let score = 0;
 
   for (const tile of line) {
     if (tile === BLOCKED_TILE) {
-      result.push(...mergeTileSegment(segment), BLOCKED_TILE);
+      const mergedSegment = mergeTileSegment(segment);
+      result.push(...mergedSegment.line, BLOCKED_TILE);
+      score += mergedSegment.score;
       segment = [];
     } else {
       segment.push(tile);
     }
   }
 
-  return [...result, ...mergeTileSegment(segment)];
+  const mergedSegment = mergeTileSegment(segment);
+  return { line: [...result, ...mergedSegment.line], score: score + mergedSegment.score };
 }
 
-function mergeTileSegment(segment: Tile[]): Tile[] {
+function mergeTileSegment(segment: Tile[]): LineMove {
   const tiles = segment.filter((tile): tile is number => typeof tile === 'number');
   const result: Tile[] = [];
+  let score = 0;
 
   for (let index = 0; index < tiles.length; index += 1) {
     if (tiles[index] === tiles[index + 1]) {
       const mergedTile = tiles[index] * 2;
       result.push(mergedTile);
+      score += mergedTile;
       index += 1;
     } else {
       result.push(tiles[index]);
     }
   }
 
-  return [...result, ...Array<Tile>(segment.length - result.length).fill(null)];
+  return {
+    line: [...result, ...Array<Tile>(segment.length - result.length).fill(null)],
+    score,
+  };
 }

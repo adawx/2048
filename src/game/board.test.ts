@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   hasAvailableMove,
   moveBoard,
+  moveBoardWithScore,
   placeBlockedTileInRandomEmptyCell,
   placeTileInRandomEmptyCell,
 } from '@game/board';
@@ -44,6 +45,25 @@ describe('moveBoard', () => {
       [null, null, null, null],
       [null, null, null, null],
     ]);
+  });
+
+  it('reports the value of every merged tile as the score gain', () => {
+    const board = createBoard([
+      [2, 2, 4, 4],
+      [null, null, null, null],
+      [null, null, null, null],
+      [null, null, null, null],
+    ]);
+
+    expect(moveBoardWithScore(board, Direction.Left)).toEqual({
+      board: [
+        [4, 8, null, null],
+        [null, null, null, null],
+        [null, null, null, null],
+        [null, null, null, null],
+      ],
+      score: 12,
+    });
   });
 
   it('reads columns in reverse when moving down', () => {
