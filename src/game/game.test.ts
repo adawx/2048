@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { createGame, move } from '@game/game';
-import { Direction, type Random } from '@shared/types';
+import { BLOCKED_TILE, Direction, type Random } from '@shared/types';
 import { createPlayingGame } from '../test/fixtures';
 
 const fixedRandom = (...values: number[]): Random => {
@@ -9,18 +9,31 @@ const fixedRandom = (...values: number[]): Random => {
 };
 
 describe('createGame', () => {
-  it('places at least one and up to a full board of twos by default', () => {
+  it('places a blocked cell and at least one and up to 15 twos by default', () => {
     const minimumGame = createGame({ random: fixedRandom(0, 0) });
-    const game = createGame({ random: fixedRandom(0.99, 0, 0, 0, 0) });
+    const game = createGame({ random: fixedRandom(0.99, 0.99, 0, 0, 0) });
 
-    expect(minimumGame.board.flat().filter((tile) => tile !== null)).toEqual([2]);
-    expect(game.board.flat().filter((tile) => tile !== null)).toEqual(Array(16).fill(2));
+    expect(
+      minimumGame.board.flat().filter((tile): tile is number => typeof tile === 'number'),
+    ).toEqual([2]);
+    expect(game.board.flat().filter((tile): tile is number => typeof tile === 'number')).toEqual(
+      Array(15).fill(2),
+    );
+    expect(game.board.flat().filter((tile) => tile === BLOCKED_TILE)).toHaveLength(1);
   });
 
   it('places the requested number of twos in distinct cells', () => {
     const game = createGame({ initialTileCount: 3, random: fixedRandom(0, 0, 0) });
 
-    expect(game.board.flat().filter((tile) => tile !== null)).toEqual([2, 2, 2]);
+    expect(game.board.flat().filter((tile): tile is number => typeof tile === 'number')).toEqual([
+      2, 2, 2,
+    ]);
+  });
+
+  it('rejects more initial tiles than fit around the blocked cell', () => {
+    expect(() => createGame({ initialTileCount: 16 })).toThrow(
+      'initialTileCount must be between 1 and 15',
+    );
   });
 });
 

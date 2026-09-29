@@ -18,6 +18,10 @@ export function Game() {
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
+      if (isSuggesting) {
+        return;
+      }
+
       const direction = directionForKey[event.key];
 
       if (direction === undefined) {
@@ -31,7 +35,7 @@ export function Game() {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+  }, [isSuggesting]);
 
   const message =
     game.status === 'won'

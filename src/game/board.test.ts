@@ -1,6 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import { hasAvailableMove, moveBoard, placeTileInRandomEmptyCell } from '@game/board';
-import { Direction, type Random } from '@shared/types';
+import {
+  hasAvailableMove,
+  moveBoard,
+  placeBlockedTileInRandomEmptyCell,
+  placeTileInRandomEmptyCell,
+} from '@game/board';
+import { BLOCKED_TILE, Direction, type Random } from '@shared/types';
 import { createBoard } from '../test/fixtures';
 
 const fixedRandom = (...values: number[]): Random => {
@@ -56,6 +61,39 @@ describe('moveBoard', () => {
       [4, null, null, null],
     ]);
   });
+
+  it('does not move or merge tiles across blocked cells', () => {
+    const board = createBoard([
+      [2, null, BLOCKED_TILE, 2],
+      [null, null, null, null],
+      [null, null, null, null],
+      [null, null, null, null],
+    ]);
+
+    expect(moveBoard(board, Direction.Left)[0]).toEqual([2, null, BLOCKED_TILE, 2]);
+  });
+
+  it('check merge state blocked tile left', () => {
+    const board = createBoard([
+      [2, BLOCKED_TILE, 2, 2],
+      [null, null, null, null],
+      [null, null, null, null],
+      [null, null, null, null],
+    ]);
+
+    expect(moveBoard(board, Direction.Left)[0]).toEqual([2, BLOCKED_TILE, 4, null]);
+  });
+
+  it('check merge state blocked tile right', () => {
+    const board = createBoard([
+      [2, 2, BLOCKED_TILE, 2],
+      [null, null, null, null],
+      [null, null, null, null],
+      [null, null, null, null],
+    ]);
+
+    expect(moveBoard(board, Direction.Right)[0]).toEqual([null, 4, BLOCKED_TILE, 2]);
+  });
 });
 
 describe('placeTileInRandomEmptyCell', () => {
@@ -71,6 +109,25 @@ describe('placeTileInRandomEmptyCell', () => {
       [2, null, null, null],
       [null, null, null, null],
       [4, null, null, null],
+      [null, null, null, null],
+    ]);
+  });
+
+  it('does not place tiles in the blocked cell', () => {
+    const board = placeBlockedTileInRandomEmptyCell(
+      createBoard([
+        [null, null, null, null],
+        [null, null, null, null],
+        [null, null, null, null],
+        [null, null, null, null],
+      ]),
+      fixedRandom(0),
+    );
+
+    expect(placeTileInRandomEmptyCell(board, 2, fixedRandom(0))).toEqual([
+      [BLOCKED_TILE, 2, null, null],
+      [null, null, null, null],
+      [null, null, null, null],
       [null, null, null, null],
     ]);
   });
