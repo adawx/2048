@@ -1,4 +1,5 @@
-export type Tile = number | null;
+export const BLOCKED_TILE = 'blocked' as const;
+export type Tile = number | null | typeof BLOCKED_TILE;
 export type Board = readonly (readonly Tile[])[];
 export const Direction = {
   Down: 'down',

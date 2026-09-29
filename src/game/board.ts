@@ -1,11 +1,23 @@
 import { BOARD_SIZE } from '@shared/constants';
-import { Direction, type Board, type Random, type Tile } from '@shared/types';
+import { BLOCKED_TILE, Direction, type Board, type Random, type Tile } from '@shared/types';
 
 export function createEmptyBoard(): Board {
   return Array.from({ length: BOARD_SIZE }, () => Array<Tile>(BOARD_SIZE).fill(null));
 }
 
 export function placeTileInRandomEmptyCell(board: Board, value: number, random: Random): Board {
+  return placeValueInRandomEmptyCell(board, value, random);
+}
+
+export function placeBlockedTileInRandomEmptyCell(board: Board, random: Random): Board {
+  return placeValueInRandomEmptyCell(board, BLOCKED_TILE, random);
+}
+
+function placeValueInRandomEmptyCell(
+  board: Board,
+  value: Exclude<Tile, null>,
+  random: Random,
+): Board {
   const emptyCells = board.flatMap((row, rowIndex) =>
     row.flatMap((tile, columnIndex) => (tile === null ? [[rowIndex, columnIndex]] : [])),
   );
@@ -39,7 +51,7 @@ export function hasAvailableMove(board: Board): boolean {
 }
 
 export function containsTile(board: Board, value: number): boolean {
-  return board.some((row) => row.some((tile) => tile !== null && tile >= value));
+  return board.some((row) => row.some((tile) => typeof tile === 'number' && tile >= value));
 }
 
 export function boardsEqual(first: Board, second: Board): boolean {
@@ -77,7 +89,23 @@ function lineCoordinates(
 }
 
 function mergeLine(line: Tile[]): Tile[] {
-  const tiles = line.filter((tile): tile is number => tile !== null);
+  const result: Tile[] = [];
+  let segment: Tile[] = [];
+
+  for (const tile of line) {
+    if (tile === BLOCKED_TILE) {
+      result.push(...mergeTileSegment(segment), BLOCKED_TILE);
+      segment = [];
+    } else {
+      segment.push(tile);
+    }
+  }
+
+  return [...result, ...mergeTileSegment(segment)];
+}
+
+function mergeTileSegment(segment: Tile[]): Tile[] {
+  const tiles = segment.filter((tile): tile is number => typeof tile === 'number');
   const result: Tile[] = [];
 
   for (let index = 0; index < tiles.length; index += 1) {
@@ -90,5 +118,5 @@ function mergeLine(line: Tile[]): Tile[] {
     }
   }
 
-  return [...result, ...Array<Tile>(BOARD_SIZE - result.length).fill(null)];
+  return [...result, ...Array<Tile>(segment.length - result.length).fill(null)];
 }
